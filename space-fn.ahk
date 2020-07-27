@@ -114,9 +114,9 @@ space & [::Send ^#{left}
 space & ]::Send ^#{right}
 
 ; *** space other
-\:: Send {Del}
-'::`
-s:: Send {space}
+space & \:: Send {Del}
+space & '::`
+space & s:: Send {space}
 
 ;  *** space + X + X
 #if GetKeyState("space", "P")
