@@ -19,7 +19,7 @@ return
 ; 启动目录
 :*:stmu::C:\Users\lih-y\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup
 
-:*:tlp::13161080472
+:*:tlp::131****0472
 
 :*:adeb::debug_http://10.1.73.71:8080/#/?full_screen=1
 
