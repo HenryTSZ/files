@@ -1,27 +1,60 @@
 ;=====================================================================o
 ; 开机启动 iNode
-;Run C:\Program Files (x86)\iNode\iNode Client\iNode Client.exe
+
+; Run C:\Program Files (x86)\iNode\iNode Client\iNode Client.exe
 
 ;=====================================================================o
 ; 5 分钟内无鼠标键盘活动, 触发一次鼠标移动事件, 防止屏幕锁定
+
 Loop{
-	If A_TimeIdle > 295000
-	{
-		Random, x, -15, 15
-		Random, y, -15, 15
-		MouseMove, %x%, %y%, 0, r
-	}
+  If A_TimeIdle > 295000
+  {
+    Random, x, -15, 15
+    Random, y, -15, 15
+    MouseMove, %x%, %y%, 0, r
+  }
 }
 return
 
 ;=====================================================================o
 ; 热字符串
+
 ; 启动目录
-:*:stmu::C:\Users\lih-y\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup
+:*:stup::
+Send %A_Startup%
+return
 
 :*:tlp::131****0472
 
 :*:adeb::debug_http://10.1.73.71:8080/#/?full_screen=1
+
+/*
+	快速生成网站 md 格式链接
+	使用方法: 在网站先复制 title, 再输入 aa 即可
+*/
+:*:aa::
+  flag := true
+  Content := Clipboard
+  FileAppend, %ClipboardAll%, temp.clip
+  Loop {
+    FileReadLine, line, temp.clip, %A_Index%
+    if ErrorLevel
+      break
+    c := RegExMatch(line,"SourceURL:(.*)$", url)
+    if (c = 1)
+    {
+      flag := false
+      ; Send, 网址: %url1%`n主题: %Content% ;注意url后面的数字1
+      Send {!}[%Content%](%url1%)
+      break
+    }
+  }
+  FileDelete, temp.clip
+  if (flag)
+  {
+    Send aa
+  }
+return
 
 ;=====================================================================o
 ; 按键修饰符
@@ -43,29 +76,25 @@ RAlt::RCtrl
 AppsKey::RAlt
 
 CapsLock::
-	KeyWait, CapsLock
-	if (A_TimeSinceThisHotkey > 300)
-	{
-		state := GetKeyState("Capslock", "T")  ; 当 CapsLock 打开时为真, 否则为假.
-		if state
-			SetCapsLockState, Off
-		else
-			SetCapsLockState, On
-	}
-	else
-	{
-		state := GetKeyState("Capslock", "T")
-		if state
-		{
-			SetCapsLockState, Off
-		}
-		Send {Shift}
-	}
+  KeyWait, CapsLock
+  if (A_TimeSinceThisHotkey > 300)
+  {
+    state := GetKeyState("Capslock", "T") ; 当 CapsLock 打开时为真, 否则为假.
+    if state
+      SetCapsLockState, Off
+    else
+      SetCapsLockState, On
+  }
+  else
+  {
+    state := GetKeyState("Capslock", "T")
+    if state
+    {
+      SetCapsLockState, Off
+    }
+    Send {Shift}
+  }
 return
-
-;#if GetKeyState("LCtrl", "P")
-;Tab:: Send !{Tab}
-;return
 
 ;=====================================================================o
 ; space-fn
@@ -118,9 +147,9 @@ space & \:: Send {Del}
 space & '::`
 space & s:: Send {space}
 
-;  *** space + X + X
+;  *** space + X + Y
 #if GetKeyState("space", "P")
-d & k:: Send +{up}
+  d & k:: Send +{up}
 d & h:: Send +{left}
 d & j:: Send +{down}
 d & l:: Send +{right}
@@ -128,9 +157,8 @@ f & k:: Send ^{up}
 f & h:: Send ^{left}
 f & j:: Send ^{down}
 f & l:: Send ^{right}
-g & k:: Send ^+{up} 
+g & k:: Send ^+{up}
 g & h:: Send ^+{left}
 g & j:: Send ^+{down}
 g & l:: Send ^+{right}
-
 return
