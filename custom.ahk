@@ -1,9 +1,4 @@
 ;=====================================================================o
-; 开机启动 iNode
-
-; Run C:\Program Files (x86)\iNode\iNode Client\iNode Client.exe
-
-;=====================================================================o
 ; 5 分钟内无鼠标键盘活动, 触发一次鼠标移动事件, 防止屏幕锁定
 
 Loop{
@@ -20,17 +15,17 @@ return
 ; 热字符串
 
 ; 启动目录
-:*:stup::
-Send %A_Startup%
+:*:stu::
+  Send %A_Startup%
 return
 
-:*:tlp::131****0472
+:*:tlp::13161080472
 
-:*:adeb::debug_http://10.1.73.71:8080/#/?full_screen=1
+:*:dbg::debug_http://10.2.120.41:8080/?full_screen=1
 
 /*
-	快速生成网站 md 格式链接
-	使用方法: 在网站先复制 title, 再输入 aa 即可
+  快速生成网站 md 格式链接
+  使用方法: 在网站先复制 title, 再输入 aa 即可
 */
 :*:aa::
   flag := true
@@ -60,26 +55,17 @@ return
 ; 按键修饰符
 
 \::BS
-
 BS::\
 
-LAlt::LCtrl
-
-LWin::LAlt
-
+LWin::LCtrl
 LCtrl::LWin
 
-RAlt::RCtrl
-
-;RCtrl::LWin
-
-AppsKey::RAlt
-
+; 短按 CapsLock 切换中英文，长按开启大写
 CapsLock::
   KeyWait, CapsLock
   if (A_TimeSinceThisHotkey > 300)
   {
-    state := GetKeyState("Capslock", "T") ; 当 CapsLock 打开时为真, 否则为假.
+    state := GetKeyState("Capslock", "T")
     if state
       SetCapsLockState, Off
     else
@@ -92,8 +78,53 @@ CapsLock::
     {
       SetCapsLockState, Off
     }
-    Send {Shift}
+    Send {ctrl down}{shift down}
+    Send {shift up}{ctrl up}
   }
+return
+
+; CapsLock 切换桌面
+CapsLock & 1::Send ^#{left}
+CapsLock & 2::Send ^#{right}
+return
+
+; CapsLock as Control for vim
+
+; CapsLock + [ 进入 normal 模式，并切换到英文输入法，系统配置的切换到英文快捷键是 ctrl + 0
+CapsLock & [::
+  Send {Esc}
+  Send ^0
+return
+
+CapsLock & i::Send ^i
+CapsLock & o::Send ^o
+CapsLock & `;::Send ^`;
+CapsLock & v::Send ^v
+CapsLock & r::Send ^r
+CapsLock & f::Send ^f
+CapsLock & b::Send ^b
+CapsLock & d::Send ^d
+CapsLock & u::Send ^u
+CapsLock & w::Send ^w
+return
+
+;=====================================================================o
+/*
+  自动复制 chrome 页签 title
+
+  使用方法:
+  1. 使用 chrome 打开需要复制的页签
+  2. 使用快捷键 Ctrl + q 复制(可以在任何地方)
+  3. Ctrl + v 粘贴
+*/
+^q::
+  WinGetTitle, Title, ahk_exe chrome.exe
+  Title := StrReplace(Title, " - Google Chrome")
+  Title := StrReplace(Title, " - Glodon New JIRA")
+  ToolTip, %Title%
+  clipboard := Title
+  Sleep, 1000
+  ToolTip
 return
 
 ;=====================================================================o
@@ -139,17 +170,21 @@ space & v:: Send ^v
 space & z:: Send ^z
 
 ;  *** space + [] (windows virual desktop switcher)
-space & [::Send ^#{left}
-space & ]::Send ^#{right}
+space & ,::Send ^#{left}
+space & .::Send ^#{right}
 
 ; *** space other
 space & \:: Send {Del}
 space & '::`
-space & s:: Send {space}
+; space & s:: Send {space}
 
 ;  *** space + X + Y
 #if GetKeyState("space", "P")
-  d & k:: Send +{up}
+  s & k:: Send !{up}
+s & h:: Send !{left}
+s & j:: Send !{down}
+s & l:: Send !{right}
+d & k:: Send +{up}
 d & h:: Send +{left}
 d & j:: Send +{down}
 d & l:: Send +{right}
