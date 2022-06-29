@@ -60,3 +60,31 @@ return
 ;   Send {Esc}
 ;   Send ^0
 ; return
+
+; 用 gVim 编辑任意窗口的文字[AHK]
+; https://www.appinn.com/gvim-ahk-tip/
+^i::
+    tmpfile=%A_ScriptDir%\ahk_text_edit_in_vim.txt
+    gvim=P:\Vim\vim72\gvim.exe
+    WinGetTitle, active_title, A
+    clipboard =
+        ; 清空剪贴板
+    send ^a
+        ; 发送 Ctrl + A 选中全部文字
+    send ^c
+        ; 发送 Ctrl + C 复制
+    clipwait
+        ; 等待数据进入剪贴板
+    FileDelete, %tmpfile%
+    FileAppend, %clipboard%, %tmpfile%
+    runwait, %gvim% "%tmpfile%" +
+    fileread, text, %tmpfile%
+    clipboard:=text
+        ; 还原读取的数据到剪贴板
+    winwait %active_title%
+        ; 等待刚才获取文字的窗口激活
+    send ^v
+        ; 发送 Ctrl + V 粘贴
+return
+
+
