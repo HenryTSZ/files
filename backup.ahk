@@ -87,4 +87,98 @@ return
         ; 发送 Ctrl + V 粘贴
 return
 
+;=====================================================================o
+; 激活窗口，切换最大/小化
 
+!g::
+;WinGet, OutputVar, ProcessName, A
+WinGetTitle, OutputVar, A
+clipboard := OutputVar
+MsgBox, %OutputVar%
+return
+
+!h::
+RX := "RX文件管理器"
+SetTitleMatchMode 2
+  if not WinExist(RX)
+  {
+    run "%A_Programs%\RX-Explorer"
+  }
+  else if WinActive(RX)
+  {
+    WinMinimize
+  }
+  else
+  {
+    WinActivate
+  }
+return
+
+!j::
+  if not WinExist("ahk_exe chrome.exe")
+  {
+    run "%A_ProgramsCommon%\Google Chrome"
+    WinWait, ahk_exe chrome.exe
+    WinMaximize
+  }
+  else if WinActive("ahk_exe chrome.exe")
+  {
+    WinMinimize
+  }
+  else
+  {
+    WinActivate
+    WinGet, OutputVar, MinMax
+    if OutputVar != 1
+      WinMaximize
+  }
+return
+
+!k::
+  if not WinExist("ahk_exe Code.exe")
+  {
+    run "%A_Programs%\Visual Studio Code\Visual Studio Code"
+  }
+  else if WinActive("ahk_exe Code.exe")
+  {
+    WinMinimize
+  }
+  else
+  {
+    WinActivate
+    WinGet, OutputVar, MinMax
+    if OutputVar != 1
+      WinMaximize
+  }
+return
+
+!l::
+  if not WinExist("ahk_exe WindowsTerminal.exe")
+  {
+    run "%A_Programs%\WindowsTerminal"
+  }
+  else if WinActive("ahk_exe WindowsTerminal.exe")
+  {
+    WinMinimize
+  }
+  else
+  {
+    WinActivate
+  }
+return
+
+!;::
+  if not WinExist("ahk_exe WXWork.exe")
+  {
+    run "%A_StartMenuCommon%\WXWork"
+  }
+  else if WinActive("ahk_exe WXWork.exe")
+  {
+    WinMinimize
+    ; WinHide
+  }
+  else
+  {
+    WinActivate
+  }
+return
