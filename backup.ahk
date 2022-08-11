@@ -182,3 +182,72 @@ return
     WinActivate
   }
 return
+
+;=====================================================================o
+; space-fn
+
+space::Send {space}
+
+^space::Send ^{space}
+#space::Send #{space}
+^#space::Send ^#{space}
+!space::Send !{space}
+^!space::Send ^!{space}
+
+;  *** space + Num to Function
+space & 1::Send {F1}
+space & 2::Send {F2}
+space & 3::Send {F3}
+space & 4::Send {F4}
+space & 5::Send {F5}
+space & 6::Send {F6}
+space & 7::Send {F7}
+space & 8::Send {F8}
+space & 9::Send {F9}
+space & 0::Send {F10}
+space & -::Send {F11}
+space & =::Send {F12}
+
+; *** space + hjkl uiop to move cursor
+space & k:: Send {up}
+space & h:: Send {left}
+space & j:: Send {down}
+space & l:: Send {right}
+space & i:: Send {home}
+space & o:: Send {end}
+space & u:: Send {Pgup}
+space & p:: Send {Pgdn}
+
+; *** space + acxvz to copy/cut/paste...
+space & a:: Send ^a
+space & c:: Send ^c
+space & x:: Send ^x
+space & v:: Send ^v
+space & z:: Send ^z
+
+; *** space other
+space & \:: Send {Del}
+space & '::`
+space & q:: Send #^{left}
+space & w:: Send #^{right}
+; space & s:: Send {space}
+
+;  *** space + X + Y
+#if GetKeyState("space", "P")
+  LAlt & k:: Send !{up}
+LAlt & h:: Send !{left}
+LAlt & j:: Send !{down}
+LAlt & l:: Send !{right}
+LShift & k:: Send +{up}
+LShift & h:: Send +{left}
+LShift & j:: Send +{down}
+LShift & l:: Send +{right}
+f & k:: Send ^{up}
+f & h:: Send ^{left}
+f & j:: Send ^{down}
+f & l:: Send ^{right}
+g & k:: Send ^+{up}
+g & h:: Send ^+{left}
+g & j:: Send ^+{down}
+g & l:: Send ^+{right}
+return
