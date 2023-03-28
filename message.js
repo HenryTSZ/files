@@ -302,6 +302,10 @@
     }
   }
 
+  if (!window.MessageType) {
+    window.MessageType = MessageType
+  }
+
   if (!window.MessageControl) {
     window.MessageControl = MessageControl
   }
