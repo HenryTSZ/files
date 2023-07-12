@@ -309,4 +309,4 @@
   if (!window.MessageControl) {
     window.MessageControl = MessageControl
   }
-})()
+})();
