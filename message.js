@@ -229,7 +229,7 @@
       this.minWidth = 380 // 内容显示宽度：最小值
       this.maxWidth = 800 // 内容显示宽度：最大值
       this.top = 45 // 整体的最顶部距离
-      this.zIndex = 999 // 层级
+      this.zIndex = 999999 // 层级
       this.mainContainerIdName = 'selfDefine-message-box' // 主体DOM的id名
       this.sessionStorageName = 'MESSAGE_DONT_REMIND_AGAIN' // 存储session信息的key
       /**生成主体DOM、样式容器 */
